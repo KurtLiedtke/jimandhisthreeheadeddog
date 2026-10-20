@@ -24,6 +24,7 @@ public class MainMenuController : MonoBehaviour
     [Header("Status")]
     [SerializeField] private TMP_Text statusText;
 
+    public static ISession currentSession {get; private set;}
     private bool isBusy;
 
     private async void Start()
@@ -33,7 +34,7 @@ public class MainMenuController : MonoBehaviour
         try
         {
             await InitializeServices();
-            statusText.text = "Ready to play!";
+            statusText.text = "Create or Join to Start";
         }
         catch (Exception e)
         {
@@ -59,8 +60,7 @@ public class MainMenuController : MonoBehaviour
 
         if (!AuthenticationService.Instance.IsSignedIn)
         {
-            await AuthenticationService.Instance
-                .SignInAnonymouslyAsync();
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
         }
     }
 
@@ -92,10 +92,8 @@ public class MainMenuController : MonoBehaviour
                 MaxPlayers = 4
             }.WithRelayNetwork();
 
-            var session =
-                await MultiplayerService.Instance
-                    .CreateSessionAsync(options);
-
+            var session = await MultiplayerService.Instance.CreateSessionAsync(options);
+            currentSession = session;
             Debug.Log("Room code: " + session.Code);
             PlayerPrefs.SetString("RoomCode", session.Code);
             PlayerPrefs.Save();
@@ -131,8 +129,7 @@ public class MainMenuController : MonoBehaviour
         {
             await InitializeServices();
 
-            await MultiplayerService.Instance
-                .JoinSessionByCodeAsync(code);
+            currentSession = await MultiplayerService.Instance.JoinSessionByCodeAsync(code);
 
             PlayerPrefs.SetString("RoomCode", code);
             PlayerPrefs.Save();

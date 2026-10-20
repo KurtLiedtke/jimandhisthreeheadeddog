@@ -31,4 +31,14 @@ public class JimInputActions : MonoBehaviour
     {
         OnDirectionChosen?.Invoke(dir);
     }
+
+    public void Enable()
+    {
+        inputActions.Jim.Enable();        
+    }
+
+    public void Disable()
+    {
+        inputActions.Jim.Disable();
+    }
 }

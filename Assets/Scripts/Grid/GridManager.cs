@@ -1,5 +1,6 @@
 
 using System.Diagnostics;
+using Mono.Cecil.Cil;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
@@ -13,6 +14,11 @@ public class GridManager : MonoBehaviour
     public bool HasWall(int x, int y)
     {
         return TileType(x,y) == 1;
+    }
+
+    public void SetTile(int x, int y, int tileType)
+    {
+        wallGrid[y * WallSize + x] = tileType;
     }
 
     public int TileType(int x, int y)

@@ -39,8 +39,6 @@ public class RenderPartial : MonoBehaviour
                 TimofyBoard(x,y,grid.TileType(x,y));
                 LacyBoard(x,y,grid.TileType(x,y));
                 DougingtonBoard(x,y,grid.TileType(x,y));
-
-
             }
         }
     }

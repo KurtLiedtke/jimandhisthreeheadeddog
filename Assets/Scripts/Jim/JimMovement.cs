@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class JimMovement : MonoBehaviour
@@ -7,6 +8,8 @@ public class JimMovement : MonoBehaviour
     [SerializeField] private Vector2Int startPos;
     [SerializeField] private float jimSpeed = 1.4f;
     private Vector2Int jimPos;
+    public EventHandler OnJimMove;
+    public bool hitWall = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -20,15 +23,22 @@ public class JimMovement : MonoBehaviour
     {
         if(!grid.IsWallBetween(jimPos, dir))
         {
+            hitWall = false;
             transform.position += new Vector3(jimSpeed * dir.x, jimSpeed * dir.y); 
             jimPos = new Vector2Int(jimPos.x + 2 * dir.x, jimPos.y + 2 * dir.y);
             Debug.Log(jimPos);
+            OnJimMove?.Invoke(this, EventArgs.Empty);
+
         }
+        else {
+            hitWall = true;
+            OnJimMove?.Invoke(this, EventArgs.Empty);
+        }
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public Vector2Int GetJimPos()
     {
-        
+        return jimPos;
     }
 }
